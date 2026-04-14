@@ -1,0 +1,10 @@
+
+[root]
+author = ["Eduardo Morras <emorras@emorras.eu>"]
+chplVersion = "2.7.0..2.7.0"
+license = "BSD 2-clause"
+name = "ProbType"
+type = "module"
+version = "0.1.0"
+
+
