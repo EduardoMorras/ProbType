@@ -29,7 +29,7 @@ proc check(d: prob, name: string) {
   const tol          = 5e-2;
   const mOK          = abs(empM - d.mean())     / (abs(d.mean()) + 1e-6)     < tol;
   const vOK          = abs(empV - d.variance()) / (abs(d.variance()) + 1e-6) < tol;
-  writef(" %<26s  E[X] theory=%.4r empirical=%.4r %s  "
+  writef(" %<30s  E[X] theory=%8.4dr empirical=%8.4dr %s  "
        + "  \t   Var[X] theory=%8.4dr empirical=%8.4dr %s\n",
          name,
          d.mean(),     empM, if mOK then "" else "",
