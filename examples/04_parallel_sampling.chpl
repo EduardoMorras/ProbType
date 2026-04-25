@@ -50,8 +50,8 @@ proc main() {
   var beta_d = beta(2.0, 5.0);
 
   t.clear(); t.start();
-  forall i in 0..#n
-    with (var rng = new randomStream(real, seed=i ^ 0xDEAD)) {
+  forall i in 0..#n {
+      var rng = new randomStream(real, seed=i ^ 0xDEAD);
       var dc = beta_d;
       results[i] = dc.sample(rng);
   }
@@ -66,8 +66,9 @@ proc main() {
 
   writeln(" 3. Monte Carlo: estimating Pi using prob ");
   // Pi/4 = P(X²+Y²≤1) for X,Y ~ Uniform(0,1)
-  var ux = uniform(0.0, 1.0);
-  var uy = uniform(0.0, 1.0);
+  // Beta(1,1) is exactly Uniform(0,1).
+  var ux = beta(1.0, 1.0);
+  var uy = beta(1.0, 1.0);
   var xs = sampleBatch(ux, n, seed=1);
   var ys = sampleBatch(uy, n, seed=2);
 
@@ -76,7 +77,7 @@ proc main() {
     if xs[i]*xs[i] + ys[i]*ys[i] <= 1.0 then inside.add(1);
   }
   const piEst = 4.0 * inside.read():real / n:real;
-  writef("  Pi estimate = %.6r  (true Pi = %.6r)  error = %.2e\n",
+  writef("  Pi estimate = %.6r  (true Pi = %.6r)  error = %.6r\n",
          piEst, pi, abs(piEst - pi));
   writeln();
 
@@ -125,8 +126,8 @@ proc main() {
     }
     chainMeans[chain] = sumX / nSamples:real;
 
-    writef("  Chain %d: posterior mean=%.4r  accept rate=%.2r\n",
-           chain, chainMeans[chain], accepted:real/nSamples:real);
+    writef("  Chain %s: posterior mean=%.4r  accept rate=%.2r\n",
+           chain:string, chainMeans[chain], accepted:real/nSamples:real);
   }
   t.stop();
 
