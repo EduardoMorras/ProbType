@@ -26,7 +26,7 @@ proc showOp(expr: string, result: prob, expected: string) {
                   else if result.isGamma()   then "Gamma"
                   else if result.isDerived() then "Derived"
                   else result.distKind():string;
-  writef("  %-40s => %-12s  %s\n", expr, kindStr, result.name());
+  writef("  %<35s => %<12s  %s\n", expr, kindStr, result.name());
   writef("    mean=%.4r  std=%.4r  (expected family: %s)\n",
          result.mean(), result.std(), expected);
 }

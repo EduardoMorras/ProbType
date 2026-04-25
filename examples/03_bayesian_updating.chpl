@@ -64,11 +64,12 @@ proc main() {
          belief.mean() - 1.96*belief.std(),
          belief.mean() + 1.96*belief.std());
 
-  for (i, o) in zip(1.., obs) {
+  for i in obs.domain {
+    const o = obs[i];
     belief = condition(belief, o, likelihoodVar=noiseSigma**2);
-    writef("  After obs %d (%5.0r):  mean=%8.1r  std=%6.1r"
+    writef("  After obs %s (%5.0dr):  mean=%8.1dr  std=%6.1dr"
          + "  95%%CI=[%7.1r, %7.1r]\n",
-           i, o, belief.mean(), belief.std(),
+           i:string, o, belief.mean(), belief.std(),
            belief.mean() - 1.96*belief.std(),
            belief.mean() + 1.96*belief.std());
   }
@@ -121,13 +122,13 @@ proc main() {
   const trueM = 3.0;
   const noiseV = 1.0;
 
-  writef("  n=%-4d  mean=%-8.3r  std=%-7.3r\n", 0, b2.mean(), b2.std());
+  writef("  n=%4dr  mean=%8.3dr  std=%7.3dr\n", 0, b2.mean(), b2.std());
   for n in [1, 2, 5, 10, 20, 50, 100] {
     const obs2 = trueM + 0.3;  // slightly biased observation stream
     while b2.std() > 10.0 / sqrt(n:real) + 0.01 {
       b2 = condition(b2, obs2, likelihoodVar=noiseV);
     }
-    writef("  n=%-4d  mean=%-8.3r  std=%-7.3r\n", n, b2.mean(), b2.std());
+    writef("  n=%4dr  mean=%8.3dr  std=%7.3dr\n", n, b2.mean(), b2.std());
   }
   writeln();
   writeln("  Std => 0 as n => ∞: belief converges to true value ");
